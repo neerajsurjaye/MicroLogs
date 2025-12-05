@@ -1,0 +1,14 @@
+services:
+    mysql:
+        image: ubuntu/mysql:8.0-24.04_edge
+    rabbitmq:
+        image: rabbitmq:4.1.6-management-alpine
+    cassandra:
+        image: cassandra:5.0.6-jammy
+    # article:
+    auth:
+        image: auth:latest
+        ports:
+            - 8081:8080
+    # feeds:
+    # notification:
