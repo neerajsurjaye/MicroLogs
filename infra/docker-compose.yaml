@@ -1,14 +1,26 @@
 services:
     mysql:
-        image: ubuntu/mysql:8.0-24.04_edge
-    rabbitmq:
-        image: rabbitmq:4.1.6-management-alpine
-    cassandra:
-        image: cassandra:5.0.6-jammy
-    # article:
+        image: mysql:oraclelinux9
+        environment:
+            MYSQL_DATABASE: micrologs
+            MYSQL_USER: spec
+            MYSQL_PASSWORD: spec
+            MYSQL_ROOT_PASSWORD: root
+        ports:
+            - "3357:3306"
+
+    # rabbitmq:
+    #     image: rabbitmq:4.1.6-management-alpine
+    # cassandra:
+    #     image: cassandra:5.0.6-jammy
+    # # article:
     auth:
         image: auth:latest
         ports:
             - 8081:8080
-    # feeds:
+        environment:
+            SPRING_PROFILES_ACTIVE: docker
+        depends_on:
+            - mysql
+    # # feeds:
     # notification:
