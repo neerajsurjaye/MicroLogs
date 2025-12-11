@@ -49,16 +49,35 @@ services:
             timeout: 10s
             retries: 5
 
-    auth:
-        image: auth:latest
-        container_name: auth
+    consul:
+        image: consul:1.15.4
+        command: agent -server -bootstrap -ui -client=0.0.0.0
         ports:
-            - "8081:8080"
+            - "8500:8500"
+            - "8600:8600/udp"
+        healthcheck:
+            test:
+                ["CMD", "curl", "-f", "http://localhost:8500/v1/status/leader"]
+            interval: 10s
+            timeout: 3s
+            retries: 5
+            start_period: 5s
         environment:
-            SPRING_PROFILES_ACTIVE: docker
-        depends_on:
-            mysql:
+            CONSUL_BIND_INTERFACE: eth0
+
+      auth:
+            image: auth:latest
+            container_name: auth
+            ports:
+                  - "8081:8080"
+            environment:
+                  SPRING_PROFILES_ACTIVE: docker
+            depends_on:
+                  mysql:
+                        condition: service_healthy
+            consul:
                 condition: service_healthy
+
             rabbitmq:
                 condition: service_healthy
             cassandra:
