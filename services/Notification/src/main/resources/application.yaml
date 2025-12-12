@@ -1,3 +1,16 @@
 spring:
-  application:
-    name: notification
+    application:
+        name: notification
+    datasource:
+        url: jdbc:mysql://localhost:3357/micrologs
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: spec
+        password: spec
+    rabbitmq:
+        host: localhost
+        port: 5672
+        username: admin
+        password: admin
+
+server:
+    port: 8081
