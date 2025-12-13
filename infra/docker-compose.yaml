@@ -43,11 +43,14 @@ services:
             CASSANDRA_BROADCAST_ADDRESS: cassandra
             CASSANDRA_RPC_ADDRESS: 0.0.0.0
             CASSANDRA_BROADCAST_RPC_ADDRESS: cassandra
+            CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch
         healthcheck:
             test: ["CMD", "cqlsh", "cassandra", "-e", "DESCRIBE KEYSPACES"]
             interval: 20s
             timeout: 10s
             retries: 5
+        volumes:
+            - ./cassandra-props/cassandra-rackdc.properties:/etc/cassandra/cassandra-rackdc.properties
 
     consul:
         image: consul:1.15.4
