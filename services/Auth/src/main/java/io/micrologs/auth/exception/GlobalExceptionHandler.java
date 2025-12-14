@@ -8,14 +8,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import io.micrologs.auth.dto.ErrorResponse;
+import io.micrologs.auth.dto.ResponseDTO;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MicroLogsAuthException.class)
-    public ResponseEntity<ErrorResponse> handleException(MicroLogsAuthException exception) {
+    public ResponseEntity<ResponseDTO<ErrorResponse>> handleException(MicroLogsAuthException exception) {
         ErrorResponse er = new ErrorResponse(exception.getMessage(), 400, LocalDateTime.now());
-        return new ResponseEntity<>(er, HttpStatus.BAD_REQUEST);
+        ResponseDTO<ErrorResponse> resp = new ResponseDTO<>("Exception Occoured", false, er);
+        return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
     }
 
 }

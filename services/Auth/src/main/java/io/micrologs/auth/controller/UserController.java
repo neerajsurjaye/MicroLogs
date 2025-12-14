@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.micrologs.auth.dto.CreateUserRequest;
 import io.micrologs.auth.dto.LoginRequest;
 import io.micrologs.auth.dto.LoginResponse;
+import io.micrologs.auth.dto.ResponseDTO;
 import io.micrologs.auth.dto.TokenValidaeRequest;
 import io.micrologs.auth.dto.TokenValidationResponse;
 import io.micrologs.auth.dto.UserResponse;
@@ -16,6 +17,8 @@ import io.micrologs.auth.service.JwtService;
 import io.micrologs.auth.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -39,8 +42,11 @@ public class UserController {
      * @return
      */
     @PostMapping
-    public UserResponse create(@RequestBody CreateUserRequest request) {
-        return map(userService.create(request));
+    public ResponseEntity<ResponseDTO<UserResponse>> create(@RequestBody CreateUserRequest request) {
+        UserResponse userResponse = map(userService.create(request));
+
+        ResponseDTO<UserResponse> response = new ResponseDTO<UserResponse>("User Created", true, userResponse);
+        return ResponseEntity.ok(response);
     }
 
     /**
@@ -50,30 +56,41 @@ public class UserController {
      * @return
      */
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest request) {
+    public ResponseEntity<ResponseDTO<LoginResponse>> login(@RequestBody LoginRequest request) {
         User user = userService.login(request);
-        return jwtService.login(user);
+        LoginResponse resp = jwtService.login(user);
+
+        ResponseDTO<LoginResponse> response = new ResponseDTO<>("Login response", true, resp);
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/validate")
-    public TokenValidationResponse validateToken(@RequestBody TokenValidaeRequest request) {
-        return jwtService.verify(request);
+    public ResponseEntity<ResponseDTO<TokenValidationResponse>> validateToken(
+            @RequestBody TokenValidaeRequest request) {
+
+        TokenValidationResponse validationResp = jwtService.verify(request);
+        ResponseDTO<TokenValidationResponse> response = new ResponseDTO<>(
+                "Token Validation",
+                true,
+                validationResp);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public UserResponse get(@PathVariable int id) {
-        return map(userService.getById(id));
-    }
+    public ResponseEntity<ResponseDTO<UserResponse>> get(@PathVariable int id) {
+        UserResponse resp = map(userService.getById(id));
 
-    @GetMapping
-    public String test() {
-        return "User Controller";
+        ResponseDTO<UserResponse> response = new ResponseDTO<UserResponse>("User Details", true, resp);
+
+        return ResponseEntity.ok(response);
     }
 
     private UserResponse map(User user) {
         UserResponse userResponse = new UserResponse();
         userResponse.setUsername(user.getUsername());
-        userResponse.setId(user.getUserid());
+        userResponse.setUserid(String.valueOf(user.getUserid()));
 
         return userResponse;
     }
