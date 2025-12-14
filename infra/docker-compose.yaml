@@ -39,7 +39,7 @@ services:
             CASSANDRA_START_RPC: "true"
             MAX_HEAP_SIZE: 1G
             HEAP_NEW_SIZE: 256M
-            CASSANDRA_LISTEN_ADDRESS: cassandra # ✔ makes it stable inside compose
+            CASSANDRA_LISTEN_ADDRESS: cassandra
             CASSANDRA_BROADCAST_ADDRESS: cassandra
             CASSANDRA_RPC_ADDRESS: 0.0.0.0
             CASSANDRA_BROADCAST_RPC_ADDRESS: cassandra

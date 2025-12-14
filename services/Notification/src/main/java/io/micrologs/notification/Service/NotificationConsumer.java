@@ -35,9 +35,6 @@ public class NotificationConsumer {
         } catch (Exception e) {
             rabbitService.ackMessage(channel, messageTag, false);
             log.error("======Got exception while parsing rabbit message : {}", e);
-
         }
-
     }
-
 }

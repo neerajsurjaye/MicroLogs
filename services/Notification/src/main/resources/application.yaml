@@ -11,6 +11,9 @@ spring:
         port: 5672
         username: admin
         password: admin
+        listener:
+            simple:
+                prefetch: 50
 
 server:
     port: 8081
