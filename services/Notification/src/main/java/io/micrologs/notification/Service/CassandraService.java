@@ -2,7 +2,6 @@ package io.micrologs.notification.Service;
 
 import java.time.Instant;
 import java.util.UUID;
-import java.util.concurrent.Semaphore;
 
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,6 @@ public class CassandraService {
 
     private CqlSession cqlSession;
     private final RabbitService rabbitService;
-    private final Semaphore semaphore = new Semaphore(50);
 
     private final PreparedStatement notificationInsertStatement;
     private final PreparedStatement notificationFetchStatement;
@@ -65,21 +63,11 @@ public class CassandraService {
         log.error("====INNSERTING DTO==== : {}", notification);
 
         try {
-            semaphore.acquire();
-        } catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
-            rabbitService.ackMessage(channel, messageTag, false);
-            log.error("Interrupted while acquiring semaphore", ex);
-            return;
-        }
-        try {
             cqlSession.execute(notificationBoundStmt);
             rabbitService.ackMessage(channel, messageTag, true);
-            semaphore.release();
         } catch (Exception ex) {
             log.error("================\nGot exception while trying to insert notification in Cassandra : {}", ex);
             rabbitService.ackMessage(channel, messageTag, false);
-            semaphore.release();
         }
     }
 
