@@ -9,7 +9,7 @@ import io.micrologs.auth.dto.CreateUserRequest;
 import io.micrologs.auth.dto.LoginRequest;
 import io.micrologs.auth.dto.LoginResponse;
 import io.micrologs.auth.dto.ResponseDTO;
-import io.micrologs.auth.dto.TokenValidaeRequest;
+import io.micrologs.auth.dto.TokenValidateRequest;
 import io.micrologs.auth.dto.TokenValidationResponse;
 import io.micrologs.auth.dto.UserResponse;
 import io.micrologs.auth.entity.User;
@@ -17,7 +17,6 @@ import io.micrologs.auth.service.JwtService;
 import io.micrologs.auth.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,7 +41,7 @@ public class UserController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<ResponseDTO<UserResponse>> create(@RequestBody CreateUserRequest request) {
+    public ResponseEntity<ResponseDTO<UserResponse>> createUser(@RequestBody CreateUserRequest request) {
         UserResponse userResponse = map(userService.create(request));
 
         ResponseDTO<UserResponse> response = new ResponseDTO<UserResponse>("User Created", true, userResponse);
@@ -67,7 +66,7 @@ public class UserController {
 
     @PostMapping("/validate")
     public ResponseEntity<ResponseDTO<TokenValidationResponse>> validateToken(
-            @RequestBody TokenValidaeRequest request) {
+            @RequestBody TokenValidateRequest request) {
 
         TokenValidationResponse validationResp = jwtService.verify(request);
         ResponseDTO<TokenValidationResponse> response = new ResponseDTO<>(

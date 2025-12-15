@@ -14,7 +14,14 @@ import io.micrologs.auth.dto.ResponseDTO;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MicroLogsAuthException.class)
-    public ResponseEntity<ResponseDTO<ErrorResponse>> handleException(MicroLogsAuthException exception) {
+    public ResponseEntity<ResponseDTO<ErrorResponse>> handleAuthException(MicroLogsAuthException exception) {
+        ErrorResponse er = new ErrorResponse(exception.getMessage(), 400, LocalDateTime.now());
+        ResponseDTO<ErrorResponse> resp = new ResponseDTO<>("Exception Occoured", false, er);
+        return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ResponseDTO<ErrorResponse>> handleException(Exception exception) {
         ErrorResponse er = new ErrorResponse(exception.getMessage(), 400, LocalDateTime.now());
         ResponseDTO<ErrorResponse> resp = new ResponseDTO<>("Exception Occoured", false, er);
         return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
