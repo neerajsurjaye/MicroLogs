@@ -3,7 +3,7 @@ package io.micrologs.auth.service;
 import org.springframework.stereotype.Service;
 
 import io.micrologs.auth.dto.LoginResponse;
-import io.micrologs.auth.dto.TokenValidaeRequest;
+import io.micrologs.auth.dto.TokenValidateRequest;
 import io.micrologs.auth.dto.TokenValidationResponse;
 import io.micrologs.auth.entity.User;
 import io.micrologs.auth.security.JwtUtil;
@@ -24,7 +24,7 @@ public class JwtService {
         return response;
     }
 
-    public TokenValidationResponse verify(TokenValidaeRequest request) {
+    public TokenValidationResponse verify(TokenValidateRequest request) {
         TokenValidationResponse response = new TokenValidationResponse();
         boolean isValid = jwtUtil.validate(request.getToken());
 
