@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class TokenValidationResponse {
     private boolean valid;
-    private String userid;
+    private Integer userid;
     private String username;
 }

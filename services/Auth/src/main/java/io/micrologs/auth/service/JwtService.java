@@ -1,5 +1,7 @@
 package io.micrologs.auth.service;
 
+import java.net.Inet4Address;
+
 import org.springframework.stereotype.Service;
 
 import io.micrologs.auth.dto.LoginResponse;
@@ -32,7 +34,9 @@ public class JwtService {
 
         if (isValid) {
             String username = jwtUtil.extractUsername(request.getToken());
+            Integer id = jwtUtil.extractId(request.getToken());
             response.setUsername(username);
+            response.setUserid(id);
         }
 
         return response;
