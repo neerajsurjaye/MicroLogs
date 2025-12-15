@@ -18,6 +18,7 @@ public class JwtUtil {
     public String generateToken(User user) {
         return Jwts.builder()
                 .setSubject(user.getUsername())
+                .claim("id", user.getUserid())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000)) // around 1 day
                 .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()), SignatureAlgorithm.HS256)
@@ -26,6 +27,10 @@ public class JwtUtil {
 
     public String extractUsername(String token) {
         return getClaims(token).getSubject();
+    }
+
+    public Integer extractId(String token) {
+        return getClaims(token).get("id", Integer.class);
     }
 
     public Boolean validate(String token) {
