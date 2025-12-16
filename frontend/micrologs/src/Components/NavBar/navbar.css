@@ -1,0 +1,9 @@
+.navbar {
+    display: flex;
+    align-items: center;
+}
+
+.nav-buttons {
+    margin-left: auto;
+    display: flex;
+}
