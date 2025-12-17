@@ -1,0 +1,52 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        enabled: true  # Must be true to discover other services
+        register: false # Disables registration for the gateway itself
+
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+      routes:
+
+        # USER SERVICE
+        - id: user-public
+          predicates:
+            - Path=/users/login,/users/register
+          uri: lb://user-service
+
+
+        - id: user-protected
+          predicates:
+            - Path=/users/me
+          uri: lb://user-service
+          filters:
+            - JwtAuthFilter
+
+        # ARTICLE SERVICE
+        - id: article-public
+          predicates:
+            - Path=/articles/**
+            - Method=GET
+          uri: lb://article-service
+
+
+        - id: article-protected
+          predicates:
+            - Path=/articles/**
+            - Method=POST,DELETE
+          uri: lb://article-service
+          filters:
+            - JwtAuthFilter
