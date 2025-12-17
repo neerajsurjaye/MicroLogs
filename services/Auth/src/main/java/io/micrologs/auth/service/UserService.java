@@ -1,11 +1,15 @@
 package io.micrologs.auth.service;
 
+import java.time.Instant;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import io.micrologs.auth.constants.AuthConstants;
 import io.micrologs.auth.dto.CreateUserRequest;
 import io.micrologs.auth.dto.LoginRequest;
+import io.micrologs.auth.dto.NotificationDTO;
 import io.micrologs.auth.entity.User;
 import io.micrologs.auth.exception.MicroLogsAuthException;
 import io.micrologs.auth.repository.UserRepository;
@@ -13,10 +17,16 @@ import io.micrologs.auth.repository.UserRepository;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final NotificationProducer notificationProducer;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+            NotificationProducer notificationProducer) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.notificationProducer = notificationProducer;
+    }
 
     public User create(CreateUserRequest createUserRequest) {
 
@@ -28,7 +38,18 @@ public class UserService {
         user.setUsername(createUserRequest.getUsername());
         user.setPassword(passwordEncoder.encode(createUserRequest.getPassword()));
 
-        return userRepository.save(user);
+        User commitedUser = userRepository.save(user);
+
+        NotificationDTO notificationDTO = NotificationDTO.builder()
+                .title("Registered: Welcome")
+                .emmited_at(Instant.now())
+                .userid(commitedUser.getUserid().toString())
+                .serviceName(AuthConstants.SERVICE_NAME)
+                .build();
+
+        notificationProducer.send(notificationDTO);
+
+        return commitedUser;
 
     }
 
@@ -43,6 +64,15 @@ public class UserService {
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new MicroLogsAuthException("Invalid Password");
         }
+
+        NotificationDTO notificationDTO = NotificationDTO.builder()
+                .title("Welcome Back")
+                .emmited_at(Instant.now())
+                .userid(user.getUserid().toString())
+                .serviceName(AuthConstants.SERVICE_NAME)
+                .build();
+
+        notificationProducer.send(notificationDTO);
 
         return user;
 
