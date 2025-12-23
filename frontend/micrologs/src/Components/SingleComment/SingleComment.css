@@ -1,0 +1,10 @@
+.single-comment {
+    padding: 8px;
+}
+.comment-user {
+    font-weight: bold;
+}
+
+.comment-votes-container {
+    display: flex;
+}

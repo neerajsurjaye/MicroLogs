@@ -1,0 +1,17 @@
+.article-page {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.article-left {
+    width: 30%;
+}
+
+.article-center {
+    width: 100%;
+}
+
+.article-right {
+    width: 30%;
+}

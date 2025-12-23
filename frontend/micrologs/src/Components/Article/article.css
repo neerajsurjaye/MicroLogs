@@ -1,0 +1,16 @@
+.article {
+    padding: 8px;
+}
+
+.article-title {
+    font-size: 3rem;
+}
+
+.article-body {
+    padding: 8px;
+    font-size: 1rem;
+}
+
+.article-details {
+    display: flex;
+}

@@ -10,3 +10,7 @@ body {
     margin: 8px;
     cursor: pointer;
 }
+
+.page {
+    margin-top: 50px;
+}
