@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import "./SingleComment.css";
 
 type commentProps = {
@@ -11,7 +12,9 @@ type commentProps = {
 const SingleComment = (props: commentProps) => {
     return (
         <div className="single-comment outline">
-            <div className="comment-user">{props.user}</div>
+            <div className="comment-user">
+                <Link to={"/user"}>{props.user}</Link>
+            </div>
             <div className="comment-content">{props.comment}</div>
             <div className="comment-votes-container">
                 <div className="comment-likes btn btn-rounded">

@@ -32,7 +32,9 @@ const NavBar = () => {
                     <Link to={"/auth"}>Auth</Link>
                 </div>
 
-                <div className="btn">btn</div>
+                <div className="btn">
+                    <Link to={"/create"}>Create Article</Link>
+                </div>
             </div>
             <NotificationContainer
                 className={getNotificationClass()}
