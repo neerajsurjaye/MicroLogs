@@ -1,5 +1,4 @@
 import ArticleContainer from "../../Components/ArticleContainer/ArticleContainer";
-import NotificationContainer from "../../Components/NotificationContainer/NotificationContainer";
 import "./homepage.css";
 
 const HomePage = () => {

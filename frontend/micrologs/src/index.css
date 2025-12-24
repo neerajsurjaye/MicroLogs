@@ -6,15 +6,27 @@
 
 body {
     margin: 0;
+    color: var(--primary-text);
 }
 
 .outline {
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 .btn {
     margin: 8px;
     cursor: pointer;
+
+    background-color: var(--button);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 6px 2px 6px;
+    border-radius: 4px;
+}
+
+.btn:hover {
+    background-color: #3f4f66;
 }
 
 .page {

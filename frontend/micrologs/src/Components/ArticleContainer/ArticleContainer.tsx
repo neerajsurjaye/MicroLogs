@@ -1,4 +1,5 @@
 import ArticleCard from "../ArticleCard/ArticleCard";
+import "./articleContainer.css";
 
 type ArticleContainerProps = {
     className?: string;
@@ -54,7 +55,11 @@ const ArticleContainer = (props: ArticleContainerProps) => {
         return articles;
     };
 
-    return <div className={props.className}>{generateArticles(10, 100)}</div>;
+    return (
+        <div className={"article-container " + props.className}>
+            {generateArticles(10, 100)}
+        </div>
+    );
 };
 
 export default ArticleContainer;
