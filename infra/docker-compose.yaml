@@ -15,42 +15,42 @@ services:
             timeout: 3s
             retries: 5
 
-    rabbitmq:
-        image: rabbitmq:4.1.6-management-alpine
-        ports:
-            - "5672:5672"
-            - "15672:15672"
-        environment:
-            RABBITMQ_DEFAULT_USER: admin
-            RABBITMQ_DEFAULT_PASS: admin
-        healthcheck:
-            test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
-            interval: 10s
-            timeout: 5s
-            retries: 5
-
-    cassandra:
-        image: cassandra:5.0.6-jammy
-        ports:
-            - "9042:9042"
-        environment:
-            CASSANDRA_CLUSTER_NAME: "microcluster"
-            CASSANDRA_NUM_TOKENS: 16
-            CASSANDRA_START_RPC: "true"
-            MAX_HEAP_SIZE: 1G
-            HEAP_NEW_SIZE: 256M
-            CASSANDRA_LISTEN_ADDRESS: cassandra
-            CASSANDRA_BROADCAST_ADDRESS: cassandra
-            CASSANDRA_RPC_ADDRESS: 0.0.0.0
-            CASSANDRA_BROADCAST_RPC_ADDRESS: cassandra
-            CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch
-        healthcheck:
-            test: ["CMD", "cqlsh", "cassandra", "-e", "DESCRIBE KEYSPACES"]
-            interval: 20s
-            timeout: 10s
-            retries: 5
-        volumes:
-            - ./cassandra-props/cassandra-rackdc.properties:/etc/cassandra/cassandra-rackdc.properties
+#    rabbitmq:
+#        image: rabbitmq:4.1.6-management-alpine
+#        ports:
+#            - "5672:5672"
+#            - "15672:15672"
+#        environment:
+#            RABBITMQ_DEFAULT_USER: admin
+#            RABBITMQ_DEFAULT_PASS: admin
+#        healthcheck:
+#            test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+#            interval: 10s
+#            timeout: 5s
+#            retries: 5
+#
+#    cassandra:
+#        image: cassandra:5.0.6-jammy
+#        ports:
+#            - "9042:9042"
+#        environment:
+#            CASSANDRA_CLUSTER_NAME: "microcluster"
+#            CASSANDRA_NUM_TOKENS: 16
+#            CASSANDRA_START_RPC: "true"
+#            MAX_HEAP_SIZE: 1G
+#            HEAP_NEW_SIZE: 256M
+#            CASSANDRA_LISTEN_ADDRESS: cassandra
+#            CASSANDRA_BROADCAST_ADDRESS: cassandra
+#            CASSANDRA_RPC_ADDRESS: 0.0.0.0
+#            CASSANDRA_BROADCAST_RPC_ADDRESS: cassandra
+#            CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch
+#        healthcheck:
+#            test: ["CMD", "cqlsh", "cassandra", "-e", "DESCRIBE KEYSPACES"]
+#            interval: 20s
+#            timeout: 10s
+#            retries: 5
+#        volumes:
+#            - ./cassandra-props/cassandra-rackdc.properties:/etc/cassandra/cassandra-rackdc.properties
 
     consul:
         image: consul:1.15.4
@@ -68,19 +68,44 @@ services:
         environment:
             CONSUL_BIND_INTERFACE: eth0
 
-    # auth:
-    #     image: auth:latest
-    #     container_name: auth
-    #     ports:
-    #         - "8081:8080"
-    #     environment:
-    #         SPRING_PROFILES_ACTIVE: docker
-    #     depends_on:
-    #         mysql:
-    #             condition: service_healthy
-    #         consul:
-    #             condition: service_healthy
-    #         rabbitmq:
-    #             condition: service_healthy
-    #         cassandra:
-    #             condition: service_healthy
+    apigateway:
+        image: apigateway:latest
+        container_name: apigateway
+        ports:
+            - "8080:8080"
+        environment:
+            SPRING_PROFILES_ACTIVE: docker
+            SERVER_PORT: 8080
+        depends_on:
+            mysql:
+                condition: service_healthy
+            consul:
+                condition: service_healthy
+
+    auth:
+         image: chowkidar:latest
+         container_name: chowkidar
+         ports:
+             - "8081:8081"
+         environment:
+             SPRING_PROFILES_ACTIVE: docker
+         depends_on:
+             mysql:
+                 condition: service_healthy
+             consul:
+                 condition: service_healthy
+    article:
+        image: article:latest
+        container_name: article
+        ports:
+            - "8082:8082"
+        environment:
+            SPRING_PROFILES_ACTIVE: docker
+            SERVER_PORT: 8082
+        depends_on:
+            mysql:
+                condition: service_healthy
+            consul:
+                condition: service_healthy
+
+

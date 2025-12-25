@@ -1,5 +1,5 @@
 server:
-  port: ${SERVER_PORT:8080}
+  port: ${SERVER_PORT}
 
 spring:
   application:
@@ -7,9 +7,10 @@ spring:
 
   cloud:
     consul:
-      host: localhost
+      host: consul
       port: 8500
       discovery:
+        enabled: false  # Must be true to discover other services
         register: false # Disables registration for the gateway itself
 
     gateway:
@@ -48,3 +49,4 @@ spring:
           uri: lb://article
           filters:
             - JwtAuthFilter
+

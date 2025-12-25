@@ -25,6 +25,8 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
 
+            System.out.println("inside the filter");
+
             String token = jwtService.getToken(exchange.getRequest());
 
             if (token == null || token.isEmpty()) {
@@ -32,6 +34,11 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
             }
 
             TokenValidationResponseDTO tokenValidationResponseDTO = jwtService.verify(token);
+
+            if(!tokenValidationResponseDTO.isValid())
+            {
+                return unauthorized(exchange);
+            }
 
             ServerHttpRequest mutatedRequest = exchange.getRequest()
                                                        .mutate()
