@@ -1,14 +1,12 @@
 package io.micrologs.article.post.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
+@Entity
 public class Comment extends TimeBaseEntity
 {
     @Id
