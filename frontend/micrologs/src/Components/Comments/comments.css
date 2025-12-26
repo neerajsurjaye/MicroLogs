@@ -1,7 +1,10 @@
 .comments-container {
     padding: 8px;
+    background-color: var(--background-second);
+    margin-top: 1rem;
 }
 
 .comments-title {
     font-size: 1.5rem;
+    margin: 16px 0;
 }

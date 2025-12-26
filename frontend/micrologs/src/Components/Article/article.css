@@ -1,9 +1,14 @@
 .article {
-    padding: 8px;
+    padding: 32px;
+    margin-top: 32px;
+
+    background-color: var(--background-second);
+    border-radius: 4px;
 }
 
 .article-title {
     font-size: 3rem;
+    text-transform: capitalize;
 }
 
 .article-body {

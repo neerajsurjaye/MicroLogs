@@ -10,8 +10,7 @@ type labelledInputProps<T> = {
 const LabelledInput = <T,>(props: labelledInputProps<T>) => {
     return (
         <div className={"labelled-input outline " + props.label}>
-            <label>{props.label}</label>
-            <input></input>
+            <label>{props.label}</label>: <input></input>
         </div>
     );
 };

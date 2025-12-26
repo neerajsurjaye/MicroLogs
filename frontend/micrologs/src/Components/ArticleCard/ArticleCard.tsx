@@ -20,7 +20,14 @@ const ArticleCard = (props: articleProps) => {
                 </div>
                 <p>{props.desc}</p>
                 <div className="article-card-details">
-                    <div className="article-likes btn">
+                    <div
+                        className="article-likes btn"
+                        onClick={(e) => {
+                            console.log("Upvote");
+                            e.stopPropagation();
+                            e.preventDefault();
+                        }}
+                    >
                         <BiUpvote></BiUpvote>
                         {props.likes}
                     </div>

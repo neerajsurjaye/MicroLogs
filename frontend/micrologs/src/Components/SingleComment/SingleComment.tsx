@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import "./SingleComment.css";
+import { BiDownvote, BiUpvote } from "react-icons/bi";
 
 type commentProps = {
     user: string;
@@ -17,11 +18,13 @@ const SingleComment = (props: commentProps) => {
             </div>
             <div className="comment-content">{props.comment}</div>
             <div className="comment-votes-container">
-                <div className="comment-likes btn btn-rounded">
-                    Like : {props.likes}
+                <div className="comment-likes btn btn-rounded btn-no-back">
+                    <BiUpvote></BiUpvote>
+                    {props.likes}
                 </div>
-                <div className="comometn-dislikes btn btn-rounded">
-                    Dislike : {props.dislikes}
+                <div className="comometn-dislikes btn btn-rounded btn-no-back">
+                    <BiDownvote></BiDownvote>
+                    {props.dislikes}
                 </div>
             </div>
         </div>

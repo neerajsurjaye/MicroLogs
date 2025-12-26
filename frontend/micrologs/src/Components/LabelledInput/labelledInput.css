@@ -2,3 +2,17 @@
     display: inline-block;
     margin: 4px;
 }
+
+.labelled-input > label {
+    display: inline-block;
+    min-width: 100px;
+}
+
+.labelled-input > input {
+    background-color: var(--input);
+    outline: none;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 8px;
+    color: var(--secondary-text);
+}

@@ -6,8 +6,8 @@ const UserPage = () => {
     return (
         <div className="user-page layout">
             <div className="layout-left"></div>
-            <div className="layout-center">
-                <UserInfo></UserInfo>
+            <div className="layout-center user-container">
+                <UserInfo username="AUSER"></UserInfo>
                 <ArticleContainer></ArticleContainer>
             </div>
             <div className="layout-right"></div>

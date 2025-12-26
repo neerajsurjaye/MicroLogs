@@ -4,4 +4,25 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+
+    background-color: var(--background);
+}
+
+.auth-card {
+    background-color: var(--background-second);
+    padding: 32px 64px;
+    margin-top: min(10vh);
+    border-radius: 16px;
+}
+
+.auth-inputs {
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-btns {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
 }

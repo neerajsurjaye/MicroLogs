@@ -1,27 +1,40 @@
+import { useState } from "react";
+import LabelledInput from "../../Components/LabelledInput/LabelledInput";
 import "./createArticle.css";
 
 const CreateArticle = () => {
+    const [title, setTitle] = useState("");
+
     return (
-        <div className="create-article layout outline">
+        <div className="layout create-article-page">
             <div className="layout-left outline"></div>
             <div className="layout-center outline">
-                <h1>Create Article</h1>
-                <form>
-                    <div className="article-title-input">
-                        <span>Title</span>
-                        <input type="text" />
-                    </div>
+                <div className="create-article  outline">
+                    <h1>Create Article</h1>
+                    <form>
+                        <LabelledInput<string>
+                            label="Title"
+                            state={title}
+                            setState={setTitle}
+                            className="article-title-input"
+                        ></LabelledInput>
 
-                    <div className="article-desc-input">
-                        <span>Content</span>
-                        <input type="text"></input>
-                    </div>
+                        <div className="article-desc-input">
+                            <span>Content : </span>
+                            <textarea name="text-area" id="article"></textarea>
+                        </div>
 
-                    <div className="article-submit-btn">
-                        <input type="button" value={"Submit Article"} />
-                    </div>
-                </form>
+                        <div className="article-submit-btn">
+                            <input
+                                className="btn"
+                                type="button"
+                                value={"Submit Article"}
+                            />
+                        </div>
+                    </form>
+                </div>
             </div>
+
             <div className="layout-right outline"></div>
         </div>
     );

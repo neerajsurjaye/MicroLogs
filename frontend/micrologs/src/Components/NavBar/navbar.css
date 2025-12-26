@@ -27,3 +27,8 @@ a:focus {
     margin-left: auto;
     display: flex;
 }
+
+.logo {
+    font-weight: bolder;
+    font-size: 1.5rem;
+}

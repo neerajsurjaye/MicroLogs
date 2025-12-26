@@ -6,10 +6,12 @@ import Footer from "./Components/Footer/Footer";
 import ArticlePage from "./Pages/ArticlePage/ArticlePage";
 import UserPage from "./Pages/UserPage/UserPage";
 import CreateArticle from "./Pages/CreateArticlePage/CreateArticle";
+import ScrollToTop from "./Components/ScrollToTop/ScrollToTop";
 
 function App() {
     return (
         <BrowserRouter>
+            <ScrollToTop></ScrollToTop>
             <NavBar></NavBar>
             <div className="page">
                 <Routes>
