@@ -1,6 +1,15 @@
 server:
     port: ${SERVER_PORT:8080}
 
+management:
+    endpoints:
+        web:
+            exposure:
+                include: gateway,health,info
+    endpoint:
+        gateway:
+            access: UNRESTRICTED
+
 spring:
     application:
         name: api-gateway
@@ -10,7 +19,7 @@ spring:
             host: localhost
             port: 8500
             discovery:
-                register: false # Disables registration for the gateway itself
+                register: true
 
         gateway:
             server:
@@ -20,41 +29,39 @@ spring:
                             lower-case-service-id: true
 
                     routes:
-                        # USER SERVICE
                         - id: user-public
                           predicates:
-                              - Path=/users/login,/users/register
+                              - Path=/auth/
                           uri: lb://auth
 
                         - id: user-protected
                           predicates:
-                              - Path=/users/me
+                              - Path=/auth/me
                           uri: lb://auth
                           filters:
                               - JwtAuthFilter
 
-                        # ARTICLE SERVICE
-                        - id: article-public
-                          predicates:
-                              - Path=/article/**
-                              - Method=GET
-                          uri: lb://article
+                        # - id: article-public
+                        #   predicates:
+                        #       - Path=/article/**
+                        #       - Method=GET
+                        #   uri: lb://article
 
-                        - id: article-protected
-                          predicates:
-                              - Path=/article/**
-                              - Method=POST,DELETE
-                          uri: lb://article
-                          filters:
-                              - JwtAuthFilter
+                        # - id: article-protected
+                        #   predicates:
+                        #       - Path=/article/**
+                        #       - Method=POST,DELETE
+                        #   uri: lb://article
+                        #   filters:
+                        #       - JwtAuthFilter
 
-                        - id: notification-protected
-                          predicates:
-                              - Path=/notification/**
-                          uri: lb://notification
-                          filters:
-                              - JwtAuthFilter
+                        # - id: notification-protected
+                        #   predicates:
+                        #       - Path=/notification/**
+                        #   uri: lb://notification
+                        #   filters:
+                        #       - JwtAuthFilter
 
-                        - id: notification-ws
-                          predicates:
-                              - Path=/ws/notification/**
+                        # - id: notification-ws
+                        #   predicates:
+                        #       - Path=/ws/notification/**
