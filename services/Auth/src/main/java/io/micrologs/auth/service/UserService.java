@@ -36,6 +36,11 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new MicroLogsAuthException("User Doesn't exist"));
     }
 
+    public User getByUserName(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new MicroLogsAuthException("User Doesn't exist"));
+    }
+
     public User login(LoginRequest request) {
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new MicroLogsAuthException("User Not Found"));
