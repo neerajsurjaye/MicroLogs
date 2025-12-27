@@ -26,9 +26,16 @@ const NotificationContainer = (props: notificationProps) => {
 
     const generateList = () => {
         let i = 0;
-        return notificationList.map((notification) => (
-            <Notification notification={notification} key={i++}></Notification>
-        ));
+        // return notificationList.map((notification) => (
+        // <Notification notification={notification} key={i++}></Notification>
+        // ));
+        return (
+            <Notification
+                title="Test Notification"
+                description="A description A description A description A  "
+                time="2025-12-13T14:30:00Z"
+            ></Notification>
+        );
     };
 
     useEffect(() => {
