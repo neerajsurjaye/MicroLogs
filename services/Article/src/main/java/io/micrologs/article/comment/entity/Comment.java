@@ -1,12 +1,16 @@
-package io.micrologs.article.post.entity;
+package io.micrologs.article.comment.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.micrologs.article.util.TimeBaseEntity;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 @Data
 @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Entity
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 public class Comment extends TimeBaseEntity
 {
     @Id
