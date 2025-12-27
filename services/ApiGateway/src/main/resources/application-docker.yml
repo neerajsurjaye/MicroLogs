@@ -42,6 +42,21 @@ spring:
                           filters:
                               - StripPrefix=1
 
+                        # =============== NOTIFICATION ==============
+                        - id: notification-protected
+                          predicates:
+                              - Path=/notification/**
+                          uri: lb://notification
+                          filters:
+                              - JwtAuthFilter
+
+                        - id: notification-ws
+                          uri: lb:ws://notification
+                          predicates:
+                              - Path=/ws/notification/**
+                          filters:
+                              - JwtAuthFilter
+
                         # - id: article-public
                         #   predicates:
                         #       - Path=/article/**
@@ -55,14 +70,3 @@ spring:
                         #   uri: lb://article
                         #   filters:
                         #       - JwtAuthFilter
-
-                        # - id: notification-protected
-                        #   predicates:
-                        #       - Path=/notification/**
-                        #   uri: lb://notification
-                        #   filters:
-                        #       - JwtAuthFilter
-
-                        # - id: notification-ws
-                        #   predicates:
-                        #       - Path=/ws/notification/**

@@ -2,12 +2,12 @@ spring:
     application:
         name: notification
     datasource:
-        url: jdbc:mysql://localhost:3357/micrologs
+        url: jdbc:mysql://mysql:3306/micrologs
         driver-class-name: com.mysql.cj.jdbc.Driver
         username: spec
         password: spec
     rabbitmq:
-        host: localhost
+        host: rabbitmq
         port: 5672
         username: admin
         password: admin
@@ -16,10 +16,10 @@ spring:
                 prefetch: 50
 
 server:
-    port: 8081
+    port: 8080
 
 cassandra:
     prop:
-        host: localhost
+        host: cassandra
         port: 9042
         datacenter: spec
