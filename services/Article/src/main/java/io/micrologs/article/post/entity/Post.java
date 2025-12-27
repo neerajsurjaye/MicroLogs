@@ -2,6 +2,7 @@ package io.micrologs.article.post.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.micrologs.article.util.TimeBaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,7 +18,8 @@ import lombok.*;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonIgnoreProperties(ignoreUnknown = true,
         value = {"hibernateLazyInitializer", "handler", "created"})
-public class Post extends TimeBaseEntity {
+public class Post extends TimeBaseEntity
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -37,7 +39,6 @@ public class Post extends TimeBaseEntity {
     @Column(name="author_id")
     private int authorId;
 
-    @Column(name="like_count" ,nullable = false ,
-            columnDefinition = "default 0")
+    @Column(name="like_count" ,nullable = false)
     private long likeCount = 0L;
 }

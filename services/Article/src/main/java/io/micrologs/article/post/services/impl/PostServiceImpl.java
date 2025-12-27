@@ -7,15 +7,18 @@ import io.micrologs.article.post.repository.PostRepository;
 import io.micrologs.article.post.services.PostService;
 import io.micrologs.article.util.Helper;
 import io.micrologs.article.util.exception.UserDisplayException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
+@RequiredArgsConstructor
 public class PostServiceImpl implements PostService
 {
-    @Autowired
-    PostRepository postRepository;
+
+    private final PostRepository postRepository;
 
     @Override
     public String addPost(String username, PostCreationRequestDTO postCreationRequestDTO)
@@ -54,5 +57,19 @@ public class PostServiceImpl implements PostService
         }
 
         postRepository.deleteById(articleId);
+    }
+
+    private int resolveAuthorId(String username) {
+        // TODO: replace later with Auth / header / snapshot table
+        return 1;
+    }
+
+    @Override
+    public List<Post> getArticlesByUsername(String username) {
+
+        // 🔴 Hardcoded mapping (temporary)
+        int authorId = resolveAuthorId(username);
+
+        return postRepository.findByAuthorId(authorId);
     }
 }
