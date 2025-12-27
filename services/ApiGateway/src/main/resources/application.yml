@@ -1,50 +1,60 @@
 server:
-  port: ${SERVER_PORT:8080}
+    port: ${SERVER_PORT:8080}
 
 spring:
-  application:
-    name: api-gateway
+    application:
+        name: api-gateway
 
-  cloud:
-    consul:
-      host: localhost
-      port: 8500
-      discovery:
-        register: false # Disables registration for the gateway itself
+    cloud:
+        consul:
+            host: localhost
+            port: 8500
+            discovery:
+                register: false # Disables registration for the gateway itself
 
-    gateway:
-      discovery:
-        locator:
-          lower-case-service-id: true
+        gateway:
+            server:
+                webflux:
+                    discovery:
+                        locator:
+                            lower-case-service-id: true
 
-      routes:
+                    routes:
+                        # USER SERVICE
+                        - id: user-public
+                          predicates:
+                              - Path=/users/login,/users/register
+                          uri: lb://auth
 
-        # USER SERVICE
-        - id: user-public
-          predicates:
-            - Path=/users/login,/users/register
-          uri: lb://chowkidar
+                        - id: user-protected
+                          predicates:
+                              - Path=/users/me
+                          uri: lb://auth
+                          filters:
+                              - JwtAuthFilter
 
+                        # ARTICLE SERVICE
+                        - id: article-public
+                          predicates:
+                              - Path=/article/**
+                              - Method=GET
+                          uri: lb://article
 
-        - id: user-protected
-          predicates:
-            - Path=/users/me
-          uri: lb://chowkidar
-          filters:
-            - JwtAuthFilter
+                        - id: article-protected
+                          predicates:
+                              - Path=/article/**
+                              - Method=POST,DELETE
+                          uri: lb://article
+                          filters:
+                              - JwtAuthFilter
 
-        # ARTICLE SERVICE
-        - id: article-public
-          predicates:
-            - Path=/article/**
-            - Method=GET
-          uri: lb://article
+                        - id: notification-protected
+                          predicates:
+                              - Path=/notification/**
+                          uri: lb://notification
+                          filters:
+                              - JwtAuthFilter
 
-
-        - id: article-protected
-          predicates:
-            - Path=/article/**
-            - Method=POST,DELETE
-          uri: lb://article
-          filters:
-            - JwtAuthFilter
+                        - id: notification-ws
+                          predicates:
+                              - Path=/ws/notification/**
