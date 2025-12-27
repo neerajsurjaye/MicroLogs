@@ -1,0 +1,6 @@
+.button {
+    display: inline-block;
+    cursor: pointer;
+    margin: 8px;
+    padding: 4px;
+}

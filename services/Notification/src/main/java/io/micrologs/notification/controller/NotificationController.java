@@ -3,6 +3,8 @@ package io.micrologs.notification.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +42,13 @@ public class NotificationController {
         GenericResponse genericResponse = cassandraService.setNotificationRead(notificationRead);
 
         return new ResponseEntity<>(genericResponse, HttpStatus.OK);
+    }
+
+    // TODO: Remove this. It should not exist on REST controller.
+    @MessageMapping("/test")
+    @SendTo("/topic/notifications")
+    public String send(String message) {
+        return "Server : " + message;
     }
 
 }

@@ -1,0 +1,23 @@
+:root {
+    --background: #0d1117;
+    --background-second: #161b22;
+    --cards: #1f2933;
+    --border: #30363d;
+
+    --primary-text: #e6edf3;
+    --secondary-text: #9ba3af;
+    --muted-text: #6b7280;
+
+    --primary-accent: #58a6ff;
+    --secondary-accent: #2dd4bf;
+    --highlight: #a5b4fc;
+
+    --success: #3fb950;
+    --error: #f85149;
+    --warning: #f59e0b;
+    --info: #388df8;
+
+    --button: #334155;
+    --button-hover: #3f4f66;
+    --input: #0d1117;
+}

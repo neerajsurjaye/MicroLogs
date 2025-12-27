@@ -1,0 +1,20 @@
+.single-comment {
+    padding: 8px;
+    margin: 16px 0;
+    background-color: var(--cards);
+}
+.comment-user {
+    font-weight: bold;
+}
+
+.comment-votes-container {
+    display: flex;
+}
+
+.comment-user {
+    text-transform: capitalize;
+}
+
+.comment-user :hover {
+    text-decoration: underline;
+}

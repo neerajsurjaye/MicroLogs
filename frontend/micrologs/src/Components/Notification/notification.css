@@ -1,0 +1,26 @@
+.notification {
+    background-color: var(--background-second);
+    padding: 16px;
+    border-radius: 8px;
+
+    color: var(--secondary-text);
+    display: flex;
+    flex-direction: column;
+}
+
+.notification-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.notification-body {
+    font-size: 0.9rem;
+    padding-left: 4px;
+}
+
+.notification-time {
+    font-size: 0.8rem;
+    margin-left: auto;
+    margin-top: 8px;
+    color: var(--muted-text);
+}
