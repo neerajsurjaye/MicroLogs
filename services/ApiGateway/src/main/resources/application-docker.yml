@@ -69,3 +69,18 @@ spring:
                         # - id: notification-ws
                         #   predicates:
                         #       - Path=/ws/notification/**
+                        # =============== NOTIFICATION ==============
+                        - id: notification-protected
+                          predicates:
+                              - Path=/notification/**
+                          uri: lb://notification
+                          filters:
+                              - JwtAuthFilter
+                              - StripPrefix=1
+
+                        - id: notification-ws
+                          uri: lb:ws://notification
+                          predicates:
+                              - Path=/ws/**
+                          filters:
+                              - JwtAuthFilter
