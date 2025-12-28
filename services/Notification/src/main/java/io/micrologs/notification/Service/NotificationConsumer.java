@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.Channel;
 
 import io.micrologs.notification.config.RabbitConfig;
-import io.micrologs.notification.controller.NotificationSocketService;
+// import io.micrologs.notification.controller.NotificationSocketService;
 import io.micrologs.notification.dto.NotificationDTO;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,14 +20,13 @@ public class NotificationConsumer {
     private ObjectMapper mapper;
     private CassandraService cassandraService;
     private final RabbitService rabbitService;
-    private final NotificationSocketService notificationSocketService;
+    // private final NotificationSocketService notificationSocketService;
 
-    public NotificationConsumer(ObjectMapper mapper, CassandraService cassandraService, RabbitService rabbitService,
-            NotificationSocketService notificationSocketService) {
+    public NotificationConsumer(ObjectMapper mapper, CassandraService cassandraService, RabbitService rabbitService) {
         this.mapper = mapper;
         this.cassandraService = cassandraService;
         this.rabbitService = rabbitService;
-        this.notificationSocketService = notificationSocketService;
+        // this.notificationSocketService = notificationSocketService;
     }
 
     @RabbitListener(queues = RabbitConfig.QUEUE, ackMode = "MANUAL")
@@ -36,7 +35,7 @@ public class NotificationConsumer {
         try {
             NotificationDTO notification = mapper.readValue(message, NotificationDTO.class);
 
-            notificationSocketService.broadcast(notification);
+            // notificationSocketService.broadcast(notification);
             cassandraService.saveNotification(notification, channel, messageTag);
         } catch (Exception e) {
             rabbitService.ackMessage(channel, messageTag, false);

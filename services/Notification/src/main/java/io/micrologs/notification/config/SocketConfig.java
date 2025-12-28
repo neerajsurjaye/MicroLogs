@@ -1,24 +1,26 @@
-package io.micrologs.notification.config;
+// package io.micrologs.notification.config;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
-import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
-import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+// import org.springframework.context.annotation.Configuration;
+// import org.springframework.web.socket.config.annotation.EnableWebSocket;
+// import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
+// import
+// org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
-@Configuration
-@EnableWebSocketMessageBroker
-public class SocketConfig implements WebSocketMessageBrokerConfigurer {
+// import io.micrologs.notification.Service.UserWebSocketHandler;
 
-    @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws").setAllowedOriginPatterns("*").withSockJS();
-    }
+// @Configuration
+// @EnableWebSocket
+// public class SocketConfig implements WebSocketConfigurer {
 
-    @Override
-    public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.setApplicationDestinationPrefixes("/app");
-        registry.enableSimpleBroker("/notification", "/topic");
-    }
+// private final UserWebSocketHandler handler;
 
-}
+// public SocketConfig(UserWebSocketHandler handler) {
+// this.handler = handler;
+// }
+
+// @Override
+// public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+// registry.addHandler(handler, "/ws/notifications")
+// .setAllowedOrigins("http://localhost:5173");
+// }
+// }

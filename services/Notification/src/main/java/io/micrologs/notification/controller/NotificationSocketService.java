@@ -1,21 +1,21 @@
-package io.micrologs.notification.controller;
+// package io.micrologs.notification.controller;
 
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Service;
+// import org.springframework.messaging.simp.SimpMessagingTemplate;
+// import org.springframework.stereotype.Service;
 
-import io.micrologs.notification.dto.NotificationDTO;
+// import io.micrologs.notification.dto.NotificationDTO;
 
-@Service
-public class NotificationSocketService {
+// @Service
+// public class NotificationSocketService {
 
-    private final SimpMessagingTemplate messagingTemplate;
+// private final SimpMessagingTemplate messagingTemplate;
 
-    public NotificationSocketService(SimpMessagingTemplate messagingTemplate) {
-        this.messagingTemplate = messagingTemplate;
-    }
+// public NotificationSocketService(SimpMessagingTemplate messagingTemplate) {
+// this.messagingTemplate = messagingTemplate;
+// }
 
-    public void broadcast(NotificationDTO message) {
-        messagingTemplate.convertAndSend("/notification/broadcast", message);
-    }
+// public void broadcast(NotificationDTO message) {
+// messagingTemplate.convertAndSend("/notification/broadcast", message);
+// }
 
-}
+// }

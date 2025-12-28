@@ -82,5 +82,24 @@ spring:
                           uri: lb:ws://notification
                           predicates:
                               - Path=/ws/**
+
+                        - id: notification-ws-http
+                          uri: lb://notification
+                          predicates:
+                              - Path=/ws/**
                           filters:
-                              - JwtAuthFilter
+                              - StripPrefix=0
+
+                        # - id: article-public
+                        #   predicates:
+                        #       - Path=/article/**
+                        #       - Method=GET
+                        #   uri: lb://article
+
+                        # - id: article-protected
+                        #   predicates:
+                        #       - Path=/article/**
+                        #       - Method=POST,DELETE
+                        #   uri: lb://article
+                        #   filters:
+                        #       - JwtAuthFilter

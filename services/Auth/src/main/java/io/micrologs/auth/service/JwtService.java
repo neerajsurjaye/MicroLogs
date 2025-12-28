@@ -23,6 +23,8 @@ public class JwtService {
         String token = jwtUtil.generateToken(user);
         LoginResponse response = new LoginResponse();
         response.setAccessToken(token);
+        response.setUserid(user.getUserid());
+        response.setUsername(user.getUsername());
         return response;
     }
 

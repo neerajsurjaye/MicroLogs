@@ -64,7 +64,9 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<ResponseDTO<LoginResponse>> login(@RequestBody LoginRequest request) {
         User user = userService.login(request);
+
         LoginResponse resp = jwtService.login(user);
+        log.error("Logging in : {} ", resp.toString());
 
         messageProducer.send(new NotificationDTO("Welcome", "Logged in", user.getUserid()));
         ResponseDTO<LoginResponse> response = new ResponseDTO<>("Login response", true, resp);
