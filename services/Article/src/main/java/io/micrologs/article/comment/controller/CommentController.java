@@ -4,6 +4,8 @@ import io.micrologs.article.comment.entity.Comment;
 import io.micrologs.article.comment.service.CommentService;
 import io.micrologs.article.util.ResponseHandler;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,7 @@ public class CommentController {
 
     // CREATE COMMENT
     @PostMapping("/{postId}")
+    @SneakyThrows
     public ResponseEntity<Object> addComment(
             @PathVariable int postId,
             @RequestHeader("X-Username") String username,
@@ -50,6 +53,7 @@ public class CommentController {
 
     // GET COMMENTS BY USER
     @GetMapping("/by-user/{username}")
+    @SneakyThrows
     public ResponseEntity<Object> getCommentsByUser(@PathVariable String username) {
 
         return ResponseHandler.generateResponse(

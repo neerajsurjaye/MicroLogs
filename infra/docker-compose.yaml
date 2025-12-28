@@ -7,6 +7,9 @@ services:
             MYSQL_USER: spec
             MYSQL_PASSWORD: spec
             MYSQL_ROOT_PASSWORD: root
+            TZ: Asia/Kolkata
+        command:
+            - --default-time-zone=+05:30
         ports:
             - "3357:3306"
         healthcheck:
@@ -94,16 +97,16 @@ services:
                 condition: service_healthy
             consul:
                 condition: service_healthy
-    # article:
-    #     image: article:latest
-    #     container_name: article
-    #     ports:
-    #         - "8082:8082"
-    #     environment:
-    #         SPRING_PROFILES_ACTIVE: docker
-    #         SERVER_PORT: 8082
-    #     depends_on:
-    #         mysql:
-    #             condition: service_healthy
-    #         consul:
-    #             condition: service_healthy
+    article:
+         image: article:latest
+         container_name: article
+         ports:
+             - "8082:8082"
+         environment:
+             SPRING_PROFILES_ACTIVE: docker
+             SERVER_PORT: 8082
+         depends_on:
+             mysql:
+                 condition: service_healthy
+             consul:
+                 condition: service_healthy
