@@ -49,11 +49,12 @@ spring:
                           uri: lb://notification
                           filters:
                               - JwtAuthFilter
+                              - StripPrefix=1
 
                         - id: notification-ws
                           uri: lb:ws://notification
                           predicates:
-                              - Path=/ws/notification/**
+                              - Path=/ws/**
                           filters:
                               - JwtAuthFilter
 

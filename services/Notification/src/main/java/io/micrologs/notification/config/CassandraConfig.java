@@ -50,7 +50,7 @@ public class CassandraConfig {
                     notification_id uuid,
                     title text,
                     description text,
-                    emmited_at timestamp,
+                    emmited_at bigint,
                     message_read Boolean,
                     service text,
                     PRIMARY KEY((userid), emmited_at, notification_id));

@@ -18,7 +18,7 @@ public class NotificationDTO {
 
     private String title;
     private String description;
-    private Instant emmited_at;
+    private long emmited_at;
     private String userid;
     private String serviceName;
     private UUID notification_id;

@@ -56,7 +56,7 @@ public class CassandraService {
                 .setUuid(1, UUID.randomUUID())
                 .setString(2, notification.getTitle())
                 .setString(3, notification.getDescription())
-                .setInstant(4, Instant.now())
+                .setLong(4, notification.getEmmited_at())
                 .setBoolean(5, false)
                 .setString(6, notification.getServiceName());
 
@@ -81,7 +81,7 @@ public class CassandraService {
             NotificationDTO curr = NotificationDTO.builder()
                     .title(row.getString("title"))
                     .description(row.getString("description"))
-                    .emmited_at(row.getInstant("emmited_at"))
+                    .emmited_at(row.getLong("emmited_at"))
                     .userid(row.getString("userid"))
                     .serviceName(row.getString("service"))
                     .notification_id(row.getUuid("notification_id"))
@@ -96,7 +96,7 @@ public class CassandraService {
     public GenericResponse setNotificationRead(NotificationReadDTO notificationRead) {
 
         BoundStatement bound = setNotificationReadStatement.bind().setString(0, notificationRead.getUserid())
-                .setInstant(1, notificationRead.getEmmited_at()).setUuid(2, notificationRead.getNotification_id());
+                .setLong(1, notificationRead.getEmmited_at()).setUuid(2, notificationRead.getNotification_id());
 
         try {
             cqlSession.execute(bound);
