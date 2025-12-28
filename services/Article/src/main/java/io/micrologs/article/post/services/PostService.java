@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface PostService
 {
-    String addPost(String username, PostCreationRequestDTO postCreationRequestDTO);
+    String addPost(String username, PostCreationRequestDTO postCreationRequestDTO) throws UserDisplayException;
 
     Post getPost(String slug) throws UserDisplayException;
 
     void deletePost(String username, Integer articleId) throws UserDisplayException;
 
-    List<Post> getArticlesByUsername(String username);
+    List<Post> getArticlesByUsername(String username) throws UserDisplayException;
 }
