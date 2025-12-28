@@ -94,7 +94,7 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/user/{username}")
     public ResponseEntity<ResponseDTO<UserResponse>> getByUserId(@PathVariable String username) {
         UserResponse resp = map(userService.getByUserName(username));
 

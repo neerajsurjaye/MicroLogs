@@ -53,6 +53,7 @@ public class PostController
     }
 
     @GetMapping("/by-user/{username}")
+    @SneakyThrows
     public ResponseEntity<Object> getArticlesByUsername(
             @PathVariable String username) {
 

@@ -1,44 +1,26 @@
 package io.micrologs.apigateway.service;
 
-import io.micrologs.apigateway.dto.TokenValidationResponseDTO;
-import io.micrologs.apigateway.util.JwtUtil;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Service;
 
 @Service
 public class JwtService {
 
-    private final JwtUtil jwtUtil;
+    public String getToken(ServerHttpRequest request) {
+        String header = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
-    JwtService(JwtUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
-    }
+        if (header == null) return null;
 
+        String[] parts = header.trim().split("\\s+");
 
-    public TokenValidationResponseDTO verify(String token) {
-        TokenValidationResponseDTO response = new TokenValidationResponseDTO();
-        boolean isValid = jwtUtil.validate(token);
-
-        response.setValid(isValid);
-
-        if (isValid) {
-            String username = jwtUtil.extractUsername(token);
-            response.setUsername(username);
+        if (parts.length != 2 || !parts[0].equalsIgnoreCase("Bearer")) {
+            return null;
         }
 
-        return response;
+        return parts[1];
     }
 
-    public String getToken(ServerHttpRequest request)
-    {
-        String tokenHeader = request.getHeaders().getFirst("Authorization");
-        if(tokenHeader != null && tokenHeader.length() >= 2)
-        {
-            return tokenHeader.split(" ")[1];
-        }
-
-        return "";
-    }
 
 }
 

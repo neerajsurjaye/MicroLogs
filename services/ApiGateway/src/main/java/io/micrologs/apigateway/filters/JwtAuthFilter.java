@@ -1,10 +1,5 @@
 package io.micrologs.apigateway.filters;
 
-import io.micrologs.apigateway.dto.TokenValidationResponseDTO;
-import io.micrologs.apigateway.dto.UnauthorizedDTO;
-import io.micrologs.apigateway.service.JwtService;
-import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpStatus;
@@ -15,6 +10,10 @@ import org.springframework.web.server.ServerWebExchange;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.micrologs.apigateway.dto.UnauthorizedDTO;
+import io.micrologs.apigateway.service.AuthClientService;
+import io.micrologs.apigateway.service.JwtService;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -22,36 +21,45 @@ import reactor.core.publisher.Mono;
 public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Config> {
 
     private final JwtService jwtService;
+    private final AuthClientService authClientService;
 
-    public JwtAuthFilter(JwtService jwtService) {
+    public JwtAuthFilter(JwtService jwtService , AuthClientService authClientService) {
         super(Config.class);
         this.jwtService = jwtService;
+        this.authClientService = authClientService;
     }
 
     @Override
-    public GatewayFilter apply(Config config) {
+    public GatewayFilter apply(Config config) 
+    {
         return (exchange, chain) -> {
-
-            log.error("inside the filter");
-
             String token = jwtService.getToken(exchange.getRequest());
 
             if (token == null || token.isEmpty()) {
                 return unauthorized(exchange);
             }
 
-            TokenValidationResponseDTO tokenValidationResponseDTO = jwtService.verify(token);
+            return authClientService.validateToken(token)
+                    .flatMap(validation -> {
+                        System.out.println(validation);
+                        if (!validation.isValid()) {
+                            return unauthorized(exchange);
+                        }
 
-            if (!tokenValidationResponseDTO.isValid()) {
-                return unauthorized(exchange);
-            }
+                        ServerHttpRequest mutatedRequest = exchange.getRequest()
+                                .mutate()
+                                .header("X-Username", validation.getUsername())
+                                .build();
 
-            ServerHttpRequest mutatedRequest = exchange.getRequest()
-                    .mutate()
-                    .header("X-Username", tokenValidationResponseDTO.getUsername())
-                    .build();
-
-            return chain.filter(exchange.mutate().request(mutatedRequest).build());
+                        return chain.filter(
+                                exchange.mutate()
+                                        .request(mutatedRequest)
+                                        .build());
+                    })
+                    .onErrorResume(ex -> {
+                        ex.printStackTrace();
+                        return unauthorized(exchange);
+                    });
         };
     }
 

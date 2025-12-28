@@ -1,11 +1,16 @@
 package io.micrologs.article.post.services.impl;
 
 import com.github.slugify.Slugify;
+import io.micrologs.article.api.UserApi;
 import io.micrologs.article.post.dto.PostCreationRequestDTO;
 import io.micrologs.article.post.entity.Post;
 import io.micrologs.article.post.repository.PostRepository;
 import io.micrologs.article.post.services.PostService;
+import io.micrologs.article.util.CommonService;
 import io.micrologs.article.util.Helper;
+import io.micrologs.article.util.dto.ResponseDTO;
+import io.micrologs.article.util.dto.UserDTO;
+import io.micrologs.article.util.dto.UserResponse;
 import io.micrologs.article.util.exception.UserDisplayException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,13 +23,14 @@ import java.util.List;
 public class PostServiceImpl implements PostService
 {
 
+    private final CommonService commonService;
     private final PostRepository postRepository;
 
     @Override
-    public String addPost(String username, PostCreationRequestDTO postCreationRequestDTO)
+    public String addPost(String username, PostCreationRequestDTO postCreationRequestDTO) throws UserDisplayException
     {
-//        Long userId = userService.findByUsername(username).orElseThrow(() -> new UserDisplayException("no user found", HttpStatus.NOT_FOUND));
-        int userId = 1;
+        int userId = commonService.resolveAuthorId(username);
+        System.out.println("userId "+ userId);
         final Slugify slg = Slugify.builder().build();
         String result = slg.slugify(postCreationRequestDTO.getPost().getTitle());
         String randomHash = Helper.generatingRandomAlphanumericString();
@@ -59,16 +65,11 @@ public class PostServiceImpl implements PostService
         postRepository.deleteById(articleId);
     }
 
-    private int resolveAuthorId(String username) {
-        // TODO: replace later with Auth / header / snapshot table
-        return 1;
-    }
 
     @Override
-    public List<Post> getArticlesByUsername(String username) {
-
-        // 🔴 Hardcoded mapping (temporary)
-        int authorId = resolveAuthorId(username);
+    public List<Post> getArticlesByUsername(String username) throws UserDisplayException
+    {
+        int authorId = commonService.resolveAuthorId(username);
 
         return postRepository.findByAuthorId(authorId);
     }

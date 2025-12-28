@@ -42,6 +42,33 @@ spring:
                           filters:
                               - StripPrefix=1
 
+                        - id: article-public
+                          predicates:
+                               - Path=/article/**
+                               - Method=GET
+                          uri: lb://article
+                          filters:
+                            - StripPrefix=1
+
+                        - id: article-protected
+                          predicates:
+                               - Path=/article/**
+                               - Method=POST,DELETE
+                          uri: lb://article
+                          filters:
+                               - StripPrefix=1
+                               - JwtAuthFilter
+
+#                        - id: notification-protected
+#                           predicates:
+#                               - Path=/notification/**
+#                           uri: lb://notification
+#                           filters:
+#                               - JwtAuthFilter
+
+                        # - id: notification-ws
+                        #   predicates:
+                        #       - Path=/ws/notification/**
                         # =============== NOTIFICATION ==============
                         - id: notification-protected
                           predicates:
@@ -57,17 +84,3 @@ spring:
                               - Path=/ws/**
                           filters:
                               - JwtAuthFilter
-
-                        # - id: article-public
-                        #   predicates:
-                        #       - Path=/article/**
-                        #       - Method=GET
-                        #   uri: lb://article
-
-                        # - id: article-protected
-                        #   predicates:
-                        #       - Path=/article/**
-                        #       - Method=POST,DELETE
-                        #   uri: lb://article
-                        #   filters:
-                        #       - JwtAuthFilter
