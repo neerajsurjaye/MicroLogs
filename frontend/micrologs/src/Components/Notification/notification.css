@@ -6,6 +6,7 @@
     color: var(--secondary-text);
     display: flex;
     flex-direction: column;
+    margin-bottom: 8px;
 }
 
 .notification-title {

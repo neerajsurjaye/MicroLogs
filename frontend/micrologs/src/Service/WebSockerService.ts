@@ -1,53 +1,61 @@
-import { Client } from "@stomp/stompjs";
-import SockJS from "sockjs-client/dist/sockjs";
+// type MessageHandler = (data: any) => void;
 
-import {
-    WEB_SOCKET_NOTIFICATION_ENDPOINT,
-    WEB_SOCKET_API_ENDPOINT,
-} from "../Constants/WebSocketConstnts";
+// class NotificationSocket {
+//     private socket: WebSocket | null = null;
+//     private handlers = new Set<MessageHandler>();
+//     private userId: string | null = null;
+//     private reconnectTimeout: number | null = null;
 
-type MessageHandler = (data: any) => void;
+//     connect(userId: string) {
+//         if (this.socket && this.socket.readyState === WebSocket.OPEN) return;
 
-class WebSocketService {
-    private client: Client | null = null;
-    private handlers: Set<MessageHandler> = new Set();
+//         this.userId = userId;
 
-    connect() {
-        if (this.client?.active) return;
+//         this.socket = new WebSocket(
+//             `ws://localhost:8080/ws/notifications?userId=${userId}`
+//         );
 
-        this.client = new Client({
-            webSocketFactory: () => new SockJS(WEB_SOCKET_API_ENDPOINT),
-            reconnectDelay: 5000,
+//         this.socket.onopen = () => {
+//             console.log("Notification socket connected");
+//         };
 
-            onConnect: () => {
-                console.log("WS connected");
+//         this.socket.onmessage = (event) => {
+//             try {
+//                 const data = JSON.parse(event.data);
+//                 this.handlers.forEach((h) => h(data));
+//             } catch {
+//                 console.warn("Invalid WS message", event.data);
+//             }
+//         };
 
-                this.client?.subscribe(
-                    WEB_SOCKET_NOTIFICATION_ENDPOINT,
-                    (message) => {
-                        const data = JSON.parse(message.body);
-                        this.handlers.forEach((h) => h(data));
-                    }
-                );
-            },
-            debug: (str) => console.log(str),
-        });
+//         this.socket.onclose = () => {
+//             console.log("🔌 Notification socket closed");
+//             this.socket = null;
 
-        this.client.activate();
-    }
+//             // auto-reconnect
+//             this.reconnectTimeout = window.setTimeout(() => {
+//                 if (this.userId) {
+//                     this.connect(this.userId);
+//                 }
+//             }, 3000);
+//         };
+//     }
 
-    disconnect() {
-        this.client?.deactivate();
-        this.client = null;
-    }
+//     disconnect() {
+//         if (this.reconnectTimeout) {
+//             clearTimeout(this.reconnectTimeout);
+//         }
+//         this.socket?.close();
+//         this.socket = null;
+//     }
 
-    subscribe(handler: MessageHandler) {
-        this.handlers.add(handler);
-    }
+//     subscribe(handler: MessageHandler) {
+//         this.handlers.add(handler);
+//     }
 
-    unsubscribe(handler: MessageHandler) {
-        this.handlers.delete(handler);
-    }
-}
+//     unsubscribe(handler: MessageHandler) {
+//         this.handlers.delete(handler);
+//     }
+// }
 
-export const webSocketService = new WebSocketService();
+// export const notificationSocket = new NotificationSocket();

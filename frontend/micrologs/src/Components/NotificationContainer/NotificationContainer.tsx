@@ -1,16 +1,18 @@
-import { useEffect, useState } from "react";
-import { webSocketService } from "../../Service/WebSockerService";
+import { useContext, useEffect, useState } from "react";
 import Notification from "../Notification/Notification";
 import "./notificationContainer.css";
+import LoginState from "../../State/LoginState";
+import NotificationService from "../../Service/NotificationService";
+// import { webSocketService } from "../../Service/WebSockerService";
 
 type notificationProps = {
     className?: String | null;
 };
 
 const NotificationContainer = (props: notificationProps) => {
-    const [notificationList, setNotificationList] = useState<string[]>([]);
-
+    const [notificationList, setNotificationList] = useState<any>([]);
     const [showNotification, setShowNotification] = useState<boolean>(false);
+    const [loginState, setLoginState] = useContext(LoginState);
 
     const toggleNotification = () => {
         setShowNotification((prev) => !prev);
@@ -26,24 +28,37 @@ const NotificationContainer = (props: notificationProps) => {
 
     const generateList = () => {
         let i = 0;
-        // return notificationList.map((notification) => (
-        // <Notification notification={notification} key={i++}></Notification>
-        // ));
-        return (
-            <Notification
-                title="Test Notification"
-                description="A description A description A description A  "
-                time="2025-12-13T14:30:00Z"
-            ></Notification>
+        if (notificationList?.map)
+            return notificationList.map((notification: any) => (
+                <Notification
+                    title={notification.title}
+                    description={notification.description}
+                    time={notification.emmited_at}
+                    key={i++}
+                ></Notification>
+            ));
+    };
+
+    const fetchNotifications = async () => {
+        console.log(
+            "Fetching user notification : ",
+            loginState.loggedin,
+            loginState.userid
         );
+
+        if (loginState.loggedin && loginState.userid) {
+            let reqNotificatoins =
+                await NotificationService.getNotificationForUser(
+                    loginState.userid
+                );
+
+            setNotificationList(reqNotificatoins);
+        }
     };
 
     useEffect(() => {
-        webSocketService.connect();
-        webSocketService.subscribe((message) => {
-            setNotificationList((prev) => [...prev, JSON.stringify(message)]);
-        });
-    }, []);
+        fetchNotifications();
+    }, [loginState]);
 
     return (
         <div className="notification-wrapper">
