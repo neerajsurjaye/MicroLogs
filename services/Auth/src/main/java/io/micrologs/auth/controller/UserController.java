@@ -15,6 +15,8 @@ import io.micrologs.auth.dto.UserResponse;
 import io.micrologs.auth.entity.User;
 import io.micrologs.auth.service.JwtService;
 import io.micrologs.auth.service.UserService;
+import io.micrologs.auth.service.notificationservice.MessageProducer;
+import io.micrologs.auth.service.notificationservice.NotificationDTO;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.ResponseEntity;
@@ -29,10 +31,12 @@ public class UserController {
 
     private final UserService userService;
     private final JwtService jwtService;
+    private final MessageProducer messageProducer;
 
-    UserController(UserService userService, JwtService jwtService) {
+    UserController(UserService userService, JwtService jwtService, MessageProducer messageProducer) {
         this.userService = userService;
         this.jwtService = jwtService;
+        this.messageProducer = messageProducer;
     }
 
     /**
@@ -43,8 +47,10 @@ public class UserController {
      */
     @PostMapping
     public ResponseEntity<ResponseDTO<UserResponse>> createUser(@RequestBody CreateUserRequest request) {
-        UserResponse userResponse = map(userService.create(request));
+        User user = userService.create(request);
+        UserResponse userResponse = map(user);
 
+        messageProducer.send(new NotificationDTO("Welcome", "Welcome to micrologs", user.getUserid()));
         ResponseDTO<UserResponse> response = new ResponseDTO<UserResponse>("User Created", true, userResponse);
         return ResponseEntity.ok(response);
     }
@@ -60,6 +66,7 @@ public class UserController {
         User user = userService.login(request);
         LoginResponse resp = jwtService.login(user);
 
+        messageProducer.send(new NotificationDTO("Welcome", "Logged in", user.getUserid()));
         ResponseDTO<LoginResponse> response = new ResponseDTO<>("Login response", true, resp);
 
         return ResponseEntity.ok(response);

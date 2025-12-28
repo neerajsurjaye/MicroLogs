@@ -16,7 +16,7 @@ spring:
                 prefetch: 50
 
 server:
-    port: 8081
+    port: 8084
 
 cassandra:
     prop:

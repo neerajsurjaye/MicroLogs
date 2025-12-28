@@ -1,18 +1,25 @@
 package io.micrologs.apigateway.filters;
 
 import io.micrologs.apigateway.dto.TokenValidationResponseDTO;
+import io.micrologs.apigateway.dto.UnauthorizedDTO;
 import io.micrologs.apigateway.service.JwtService;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import reactor.core.publisher.Mono;
 
 @Component
-public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Config>
-{
+@Slf4j
+public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Config> {
 
     private final JwtService jwtService;
 
@@ -25,7 +32,7 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
 
-            System.out.println("inside the filter");
+            log.error("inside the filter");
 
             String token = jwtService.getToken(exchange.getRequest());
 
@@ -35,25 +42,36 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
 
             TokenValidationResponseDTO tokenValidationResponseDTO = jwtService.verify(token);
 
-            if(!tokenValidationResponseDTO.isValid())
-            {
+            if (!tokenValidationResponseDTO.isValid()) {
                 return unauthorized(exchange);
             }
 
             ServerHttpRequest mutatedRequest = exchange.getRequest()
-                                                       .mutate()
-                                                       .header("X-Username", tokenValidationResponseDTO.getUsername() )
-                                                       .build();
+                    .mutate()
+                    .header("X-Username", tokenValidationResponseDTO.getUsername())
+                    .build();
 
             return chain.filter(exchange.mutate().request(mutatedRequest).build());
         };
     }
 
-    public static class Config {}
+    public static class Config {
+    }
 
     private Mono<Void> unauthorized(ServerWebExchange exchange) {
         exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-        return exchange.getResponse().setComplete();
+        exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
+
+        UnauthorizedDTO unauthDTO = new UnauthorizedDTO(false, "Unauthorized");
+        try {
+            return exchange.getResponse().writeWith(
+                    Mono.just(
+                            exchange.getResponse().bufferFactory()
+                                    .wrap(new ObjectMapper().writeValueAsBytes(unauthDTO))));
+
+        } catch (Exception e) {
+            return exchange.getResponse().setComplete();
+        }
     }
 
 }

@@ -9,7 +9,7 @@ import lombok.Data;
 public class NotificationReadDTO {
 
     String userid;
-    Instant emmited_at;
+    Long emmited_at;
     UUID notification_id;
 
 }

@@ -1,0 +1,42 @@
+spring:
+    application:
+        name: notification
+    datasource:
+        url: jdbc:mysql://mysql:3306/micrologs
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: spec
+        password: spec
+    rabbitmq:
+        host: rabbitmq
+        port: 5672
+        username: admin
+        password: admin
+        listener:
+            simple:
+                prefetch: 50
+    cloud:
+        consul:
+            host: consul
+            port: 8500
+            discovery:
+                enabled: true
+                register: true
+                health-check-path: /actuator/health
+                health-check-interval: 10s
+
+server:
+    port: 8080
+
+cassandra:
+    prop:
+        host: cassandra
+        port: 9042
+        datacenter: spec
+
+management:
+    endpoints:
+        web:
+            exposure:
+                include:
+                    - health
+                    - info
