@@ -14,11 +14,13 @@ import type { UserLoginState } from "./Types/UserLoginState";
 
 function App() {
     const [loginState, setLoginState] = useState<UserLoginState>(() => {
-        return {
-            username: localStorage.getItem(USERNAME),
-            userid: localStorage.getItem(USERID),
+        let loginState: UserLoginState = {
+            username: localStorage.getItem(USERNAME) || "",
+            userid: localStorage.getItem(USERID) || "",
             loggedin: localStorage.getItem(JWT_TOKEN) != null,
         };
+
+        return loginState;
     });
 
     return (
@@ -30,7 +32,10 @@ function App() {
                     <Routes>
                         <Route path="/" Component={HomePage}></Route>
                         <Route path="/auth" Component={Authentication}></Route>
-                        <Route path="/article" Component={ArticlePage}></Route>
+                        <Route
+                            path="/article/:slug"
+                            Component={ArticlePage}
+                        ></Route>
                         <Route path="/user" Component={UserPage}></Route>
                         <Route path="/create" Component={CreateArticle}></Route>
                     </Routes>

@@ -6,8 +6,7 @@ import io.micrologs.article.util.exception.UserDisplayException;
 
 import java.util.List;
 
-public interface PostService
-{
+public interface PostService {
     String addPost(String username, PostCreationRequestDTO postCreationRequestDTO) throws UserDisplayException;
 
     Post getPost(String slug) throws UserDisplayException;
@@ -15,4 +14,6 @@ public interface PostService
     void deletePost(String username, Integer articleId) throws UserDisplayException;
 
     List<Post> getArticlesByUsername(String username) throws UserDisplayException;
+
+    List<Post> getRecentPost();
 }

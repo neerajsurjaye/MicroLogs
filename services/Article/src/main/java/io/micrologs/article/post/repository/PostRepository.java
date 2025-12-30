@@ -11,11 +11,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post, Integer>
-{
+public interface PostRepository extends JpaRepository<Post, Integer> {
     Optional<Post> findPostDetailsBySlug(String slug);
 
     List<Post> findByAuthorId(int authorId);
+
+    List<Post> findTop10ByOrderByCreatedAtDesc();
 
     @Modifying
     @Query("UPDATE Post p SET p.likeCount = p.likeCount + 1 WHERE p.id = :postId")
@@ -24,4 +25,5 @@ public interface PostRepository extends JpaRepository<Post, Integer>
     @Modifying
     @Query("UPDATE Post p SET p.likeCount = p.likeCount - 1 WHERE p.id = :postId")
     void decrementLikeCount(@Param("postId") int postId);
+
 }

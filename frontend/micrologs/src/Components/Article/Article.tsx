@@ -1,11 +1,15 @@
 import { useState } from "react";
 import "./article.css";
 import { BiDownvote, BiShare, BiUpvote, BiUser } from "react-icons/bi";
+import type { ArticleType } from "../../Types/ArticleType";
 
-const Article = () => {
-    const [likes, setLikes] = useState(Math.floor(Math.random() * 100));
-    const [dislikes, setDislikes] = useState(Math.floor(Math.random() * 100));
-    const [user, setUser] = useState("John");
+type ArticleProps = {
+    article: ArticleType;
+};
+
+const Article = (props: ArticleProps) => {
+    const [likes, setLikes] = useState(props.article.likeCount);
+    const [user, setUser] = useState(props.article.authorId);
 
     const genSampleArticle = (n: number): string => {
         const articleContent: string[] = [];
@@ -50,8 +54,9 @@ const Article = () => {
     return (
         <>
             <div className="article">
-                <div className="article-title">{genSampleArticleTitle()}</div>
-                <div className="article-body">{genSampleArticle(800)}</div>
+                <div className="article-title">{props.article.title}</div>
+                <div className="article-desc">{props.article.description}</div>
+                <div className="article-body">{props.article.body}</div>
                 <div className="article-details">
                     <div className="article-user btn btn-round">
                         <BiUser></BiUser>
@@ -63,7 +68,6 @@ const Article = () => {
                     </div>
                     <div className="article-dislike btn btn-round">
                         <BiDownvote></BiDownvote>
-                        {dislikes}
                     </div>
                     <div className="article-share btn btn-round">
                         <BiShare></BiShare>
