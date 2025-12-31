@@ -20,8 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/articles")
 @RequiredArgsConstructor
-public class PostController
-{
+public class PostController {
     private final PostService postService;
 
     @PostMapping
@@ -29,10 +28,9 @@ public class PostController
     public ResponseEntity<Object> createPost(
             HttpServletRequest request,
             @RequestHeader("X-Username") String username,
-            @Valid @RequestBody PostCreationRequestDTO postCreationRequest)
-    {
+            @Valid @RequestBody PostCreationRequestDTO postCreationRequest) {
         if (username == null || username.isBlank()) {
-            throw new UserDisplayException("Missing user context" , HttpStatus.UNAUTHORIZED);
+            throw new UserDisplayException("Missing user context", HttpStatus.UNAUTHORIZED);
         }
 
         String slug = postService.addPost(username, postCreationRequest);
@@ -40,16 +38,21 @@ public class PostController
         return ResponseHandler.generateResponse(
                 "Post created successfully",
                 HttpStatus.CREATED,
-                PostCreationResponseDTO.builder().slug(slug).build()
-        );
+                PostCreationResponseDTO.builder().slug(slug).build());
     }
 
+    @GetMapping
+    @SneakyThrows
+    public ResponseEntity<Object> getArticles() {
+
+        List<Post> posts = postService.getRecentPost();
+        return ResponseHandler.generateResponse("User posts", HttpStatus.OK, posts);
+    }
 
     @GetMapping("/{slug}")
     @SneakyThrows
-    public ResponseEntity<Object> getPost(HttpServletRequest request , @PathVariable("slug") String slug)
-    {
-        return ResponseHandler.generateResponse("post retrieve" , HttpStatus.OK ,  postService.getPost(slug));
+    public ResponseEntity<Object> getPost(HttpServletRequest request, @PathVariable("slug") String slug) {
+        return ResponseHandler.generateResponse("post retrieve", HttpStatus.OK, postService.getPost(slug));
     }
 
     @GetMapping("/by-user/{username}")

@@ -1,12 +1,17 @@
+import type { ArticleType } from "../../Types/ArticleType";
 import ArticleCard from "../ArticleCard/ArticleCard";
 import "./articleContainer.css";
 
 type ArticleContainerProps = {
     className?: string;
+    article?: ArticleType[];
 };
 
 const ArticleContainer = (props: ArticleContainerProps) => {
-    const generateArticles = (articleCount: number, articleLength: number) => {
+    const generateDummyArticles = (
+        articleCount: number,
+        articleLength: number
+    ) => {
         const articles: React.ReactElement[] = [];
 
         const words = [
@@ -55,9 +60,43 @@ const ArticleContainer = (props: ArticleContainerProps) => {
         return articles;
     };
 
+    const generateArticles = () => {
+        const articles: React.ReactElement[] = [];
+
+        if (!props.article) {
+            return;
+        }
+
+        props.article.map((x) => {
+            console.log(x.authorId);
+
+            articles.push(
+                <ArticleCard
+                    user={"" + x.authorId}
+                    desc={x.description}
+                    likes={x.likeCount}
+                    title={x.title}
+                    key={x.id}
+                    slug={x.slug}
+                ></ArticleCard>
+            );
+        });
+
+        return articles;
+    };
+
+    if (props.article == null) {
+        return (
+            <div className={"article-container " + props.className}>
+                ###Dummy articles
+                {generateDummyArticles(10, 100)}
+            </div>
+        );
+    }
+
     return (
         <div className={"article-container " + props.className}>
-            {generateArticles(10, 100)}
+            {generateArticles()}
         </div>
     );
 };

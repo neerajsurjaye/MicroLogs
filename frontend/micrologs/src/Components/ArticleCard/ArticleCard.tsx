@@ -6,14 +6,15 @@ type articleProps = {
     title: string;
     desc: string;
     likes: number;
-    dislikes: number;
+    // dislikes: number;
     user: string;
+    slug: string;
 };
 
 const ArticleCard = (props: articleProps) => {
     return (
         <div className="article-card outline">
-            <Link to={"/article"}>
+            <Link to={`/article/${props.slug}`}>
                 <div className="article-card-title">
                     <h2>{props.title}</h2>
                     <div className="article-user">-- {props.user}</div>
@@ -33,7 +34,7 @@ const ArticleCard = (props: articleProps) => {
                     </div>
                     <div className="article-dislikes btn">
                         <BiDownvote></BiDownvote>
-                        {props.dislikes}
+                        {/* {props.dislikes} */}
                     </div>
                 </div>
             </Link>
