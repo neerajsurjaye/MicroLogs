@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: article-deployment
+
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: article-deployment
+
+    strategy:
+        type: RollingUpdate
+        rollingUpdate:
+            maxSurge: 2
+
+    template:
+        metadata:
+            labels:
+                app: article-deployment
+        spec:
+            containers:
+                - name: article
+                  image: article:latest
+
+                  imagePullPolicy: Never
+                  # resources:
+                  #     limits:
+                  #         memory: "128Mi"
+                  #         cpu: "500m"
+                  ports:
+                      - containerPort: 8080
+                  envFrom:
+                      - configMapRef:
+                            name: article-configmap

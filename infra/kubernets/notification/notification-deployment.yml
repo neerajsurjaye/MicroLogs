@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: notification-deployment
+
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: notification-deployment
+
+    strategy:
+        type: RollingUpdate
+        rollingUpdate:
+            maxSurge: 2
+
+    template:
+        metadata:
+            labels:
+                app: notification-deployment
+        spec:
+            containers:
+                - name: notification
+                  image: notification:latest
+
+                  imagePullPolicy: Never
+                  # resources:
+                  #     limits:
+                  #         memory: "128Mi"
+                  #         cpu: "500m"
+                  ports:
+                      - containerPort: 8080
+                  envFrom:
+                      - configMapRef:
+                            name: notification-configmap

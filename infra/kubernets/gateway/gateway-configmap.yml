@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: gateway-configmap
+data:
+    SPRING_PROFILES_ACTIVE: kubernetes
+
+    MYSQL_URL: jdbc:mysql://host.docker.internal:3357/micrologs
+    MYSQL_USER: spec
+    MYSQL_PASSWORD: spec
+
+    RABBIT_HOST: host.docker.internal
+    RABBIT_PORT: "5672"
+    RABBIT_USER: admin
+    RABBIT_PASSWORD: admin
+
+    CONSUL_HOST: host.docker.internal
+    CONSUL_PORT: "8500"
+
+    CASSANDRA_HOST: host.docker.internal
+    CASSANDRA_PORT: "9042"
+    CASSANDRA_DATACENTER: spec

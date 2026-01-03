@@ -1,0 +1,42 @@
+spring:
+    application:
+        name: notification
+    datasource:
+        url: ${MYSQL_URL}
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: ${MYSQL_USER}
+        password: ${MYSQL_PASSWORD}
+    rabbitmq:
+        host: ${RABBIT_HOST}
+        port: ${RABBIT_PORT}
+        username: ${RABBIT_USER}
+        password: ${RABBIT_PASSWORD}
+        listener:
+            simple:
+                prefetch: 50
+    cloud:
+        consul:
+            host: ${CONSUL_HOST}
+            port: ${CONSUL_PORT}
+            discovery:
+                enabled: true
+                register: true
+                health-check-path: /actuator/health
+                health-check-interval: 10s
+
+server:
+    port: 8080
+
+cassandra:
+    prop:
+        host: ${CASSANDRA_HOST}
+        port: ${CASSANDRA_PORT}
+        datacenter: ${CASSANDRA_DATACENTER}
+
+management:
+    endpoints:
+        web:
+            exposure:
+                include:
+                    - health
+                    - info
