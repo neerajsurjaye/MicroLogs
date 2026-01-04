@@ -23,7 +23,7 @@ spec:
                 - name: auth
                   image: auth:latest
 
-                  imagePullPolicy: Never
+                  imagePullPolicy: IfNotPresent
                   # resources:
                   #     limits:
                   #         memory: "128Mi"

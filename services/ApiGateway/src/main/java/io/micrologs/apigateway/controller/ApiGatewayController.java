@@ -10,7 +10,7 @@ public class ApiGatewayController {
 
     @GetMapping
     public String getMethodName() {
-        return new String("Api Gateway");
+        return new String("Api Gateway V2");
     }
 
 }

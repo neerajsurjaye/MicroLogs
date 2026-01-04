@@ -14,15 +14,15 @@ spring:
         listener:
             simple:
                 prefetch: 50
-    cloud:
-        consul:
-            host: ${CONSUL_HOST}
-            port: ${CONSUL_PORT}
-            discovery:
-                enabled: true
-                register: true
-                health-check-path: /actuator/health
-                health-check-interval: 10s
+    # cloud:
+    #     consul:
+    #         host: ${CONSUL_HOST}
+    #         port: ${CONSUL_PORT}
+    #         discovery:
+    #             enabled: true
+    #             register: true
+    #             health-check-path: /actuator/health
+    #             health-check-interval: 10s
 
 server:
     port: 8080

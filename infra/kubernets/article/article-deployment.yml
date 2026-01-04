@@ -23,7 +23,7 @@ spec:
                 - name: article
                   image: article:latest
 
-                  imagePullPolicy: Never
+                  imagePullPolicy: IfNotPresent
                   # resources:
                   #     limits:
                   #         memory: "128Mi"

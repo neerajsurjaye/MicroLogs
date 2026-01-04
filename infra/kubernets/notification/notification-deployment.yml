@@ -23,7 +23,7 @@ spec:
                 - name: notification
                   image: notification:latest
 
-                  imagePullPolicy: Never
+                  imagePullPolicy: IfNotPresent
                   # resources:
                   #     limits:
                   #         memory: "128Mi"

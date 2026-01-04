@@ -23,7 +23,7 @@ spec:
                 - name: gateway
                   image: gateway:latest
 
-                  imagePullPolicy: Never
+                  imagePullPolicy: IfNotPresent
                   # resources:
                   #     limits:
                   #         memory: "128Mi"

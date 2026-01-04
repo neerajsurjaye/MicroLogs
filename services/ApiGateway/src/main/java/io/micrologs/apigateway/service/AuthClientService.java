@@ -14,22 +14,18 @@ public class AuthClientService {
     private final WebClient webClient;
 
     public AuthClientService(WebClient.Builder builder) {
-        this.webClient = builder.baseUrl("http://auth").build();
+        this.webClient = builder.baseUrl("http://auth-service:8080").build();
     }
 
     public Mono<TokenValidationResponseDTO> validateToken(String token) {
 
         return webClient.post()
-                        .uri("/api/v1/user/validate")
-                        .bodyValue(TokenValidateRequest.builder().token(token).build())
-                        .retrieve()
-                        .bodyToMono(
-                                new ParameterizedTypeReference<
-                                                                        ResponseDTO<TokenValidationResponseDTO>>() {}
-                        )
-                        .map(ResponseDTO::getData);
+                .uri("/api/v1/user/validate")
+                .bodyValue(TokenValidateRequest.builder().token(token).build())
+                .retrieve()
+                .bodyToMono(
+                        new ParameterizedTypeReference<ResponseDTO<TokenValidationResponseDTO>>() {
+                        })
+                .map(ResponseDTO::getData);
     }
 }
-
-
-

@@ -5,6 +5,7 @@ metadata:
     labels:
         app.kubernetes.io/name: micrologs-ingress
 spec:
+    ingressClassName: nginx
     rules:
         - http:
               paths:
